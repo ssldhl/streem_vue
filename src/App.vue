@@ -32,10 +32,7 @@ export default {
         },
         plotOptions: {
           column: {
-            stacking: 'normal',
-            dataLabels: {
-              enabled: true
-            }
+            stacking: 'normal'
           }
         },
         series: []
@@ -51,29 +48,33 @@ export default {
           .then(response => response.json())
           .then(data => {
             const result = data.result
-            const categories = []
-            const chartResponse = []
-            result.aggregations.first_agg.buckets.forEach((first_bucket) => {
-              const date = first_bucket.key
+            if(result.error){
+              alert(result.error)
+            }else{
+              const categories = []
+              const chartResponse = []
+              result.aggregations.first_agg.buckets.forEach((first_bucket) => {
+                const date = first_bucket.key
 
-              first_bucket.second_agg.buckets.forEach((second_bucket) => {
-                const media = second_bucket.key
-                const count = second_bucket.doc_count
+                first_bucket.second_agg.buckets.forEach((second_bucket) => {
+                  const media = second_bucket.key
+                  const count = second_bucket.doc_count
 
-                const media_obj = chartResponse.find((resp) => resp.name === media)
-                if(media_obj){
-                  media_obj.data.push([date, count])
-                }else{
-                  chartResponse.push({
-                    name: media,
-                    data: [[date, count]]
-                  })
-                }
+                  const media_obj = chartResponse.find((resp) => resp.name === media)
+                  if(media_obj){
+                    media_obj.data.push([date, count])
+                  }else{
+                    chartResponse.push({
+                      name: media,
+                      data: [[date, count]]
+                    })
+                  }
+                })
               })
-            })
 
-            this.chartOptions.xAxis.categories = categories
-            this.chartOptions.series = chartResponse
+              this.chartOptions.xAxis.categories = categories
+              this.chartOptions.series = chartResponse
+            }
           });
     }
   }
@@ -96,7 +97,8 @@ export default {
 @import './assets/base.css';
 
 #app {
-  max-width: 1280px;
+  max-width: 100%;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem;
 
@@ -133,7 +135,6 @@ a,
 
   #app {
     display: grid;
-    grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
 
