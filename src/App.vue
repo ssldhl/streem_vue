@@ -9,16 +9,37 @@ export default {
   },
   data() {
     return {
-      seriesData: [{
-        name: 'John',
-        data: [5, 3, 4, 7, 2]
-      }, {
-        name: 'Jane',
-        data: [2, 2, 3, 2, 1]
-      }, {
-        name: 'Joe',
-        data: [3, 4, 4, 2, 5]
-      }]
+      chartOptions: {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          text: 'Streem'
+        },
+        xAxis: {
+          labels: {
+            format: '{value:%Y-%b-%e}'
+          },
+          type: 'datetime',
+          title: {
+            text: 'timestamp'
+          }
+        },
+        yAxis: {
+          title: {
+            text: 'Count of records'
+          }
+        },
+        plotOptions: {
+          column: {
+            stacking: 'normal',
+            dataLabels: {
+              enabled: true
+            }
+          }
+        },
+        series: []
+      }
     }
   },
   methods: {
@@ -28,7 +49,32 @@ export default {
       Object.keys(data).forEach((k) => url.searchParams.append(k, data[k]))
       fetch(url)
           .then(response => response.json())
-          .then(data => console.log(data.result));
+          .then(data => {
+            const result = data.result
+            const categories = []
+            const chartResponse = []
+            result.aggregations.first_agg.buckets.forEach((first_bucket) => {
+              const date = first_bucket.key
+
+              first_bucket.second_agg.buckets.forEach((second_bucket) => {
+                const media = second_bucket.key
+                const count = second_bucket.doc_count
+
+                const media_obj = chartResponse.find((resp) => resp.name === media)
+                if(media_obj){
+                  media_obj.data.push([date, count])
+                }else{
+                  chartResponse.push({
+                    name: media,
+                    data: [[date, count]]
+                  })
+                }
+              })
+            })
+
+            this.chartOptions.xAxis.categories = categories
+            this.chartOptions.series = chartResponse
+          });
     }
   }
 }
@@ -42,7 +88,7 @@ export default {
   </header>
 
   <main>
-    <DisplayChart :chartData="seriesData"/>
+    <DisplayChart :chartOptions="chartOptions"/>
   </main>
 </template>
 
