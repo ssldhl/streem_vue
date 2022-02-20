@@ -22,8 +22,13 @@ export default {
     }
   },
   methods: {
-    sendRequest(query, dateFrom, dateTo, interval) {
-      console.log(query, dateFrom, dateTo, interval)
+    sendRequest(query, after, before, interval) {
+      const data = {query, after, before, interval}
+      const url = new URL('http://localhost:4000/results')
+      Object.keys(data).forEach((k) => url.searchParams.append(k, data[k]))
+      fetch(url)
+          .then(response => response.json())
+          .then(data => console.log(data.result));
     }
   }
 }

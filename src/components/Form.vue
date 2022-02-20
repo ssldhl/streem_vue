@@ -26,11 +26,17 @@ export default {
       this[key] = value
     },
     submitForm() {
-      let interval = ''
-      if(this.interval !== ''){
-        interval = this.interval + this.intervalRange
+      let intervalConcat = '', fromDateMilli = '', toDateMilli = ''
+      if(this.interval){
+        intervalConcat = this.interval + this.intervalRange
       }
-      this.$emit('submitAPIRequest', this.query, this.dateFrom, this.dateTo, interval)
+      if(this.dateFrom){
+        fromDateMilli = Date.parse(this.dateFrom) / 1000
+      }
+      if(this.dateTo){
+        toDateMilli = Date.parse(this.dateTo) / 1000
+      }
+      this.$emit('submitAPIRequest', this.query, fromDateMilli, toDateMilli, intervalConcat)
     }
   }
 }

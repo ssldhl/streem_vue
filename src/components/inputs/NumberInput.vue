@@ -18,8 +18,8 @@ export default {
         return this.modelValue
       },
       set(value) {
-        this.$emit('update:modelValue', value)
-        this.$emit('updateParent', this.id, value)
+        this.$emit('update:modelValue', value.toString())
+        this.$emit('updateParent', this.id, value.toString())
       }
     }
   }
