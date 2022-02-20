@@ -1,19 +1,43 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+<script>
+import Form from './components/Form.vue'
+import DisplayChart from './components/DisplayChart.vue'
+
+export default {
+  components: {
+    Form,
+    DisplayChart
+  },
+  data() {
+    return {
+      seriesData: [{
+        name: 'John',
+        data: [5, 3, 4, 7, 2]
+      }, {
+        name: 'Jane',
+        data: [2, 2, 3, 2, 1]
+      }, {
+        name: 'Joe',
+        data: [3, 4, 4, 2, 5]
+      }]
+    }
+  },
+  methods: {
+    sendRequest(query, dateFrom, dateTo, interval) {
+      console.log(query, dateFrom, dateTo, interval)
+    }
+  }
+}
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <Form @submitAPIRequest="sendRequest"/>
     </div>
   </header>
 
   <main>
-    <TheWelcome />
+    <DisplayChart :chartData="seriesData"/>
   </main>
 </template>
 
