@@ -2,6 +2,7 @@
 export default {
   props: {
     modelValue: String,
+    options: Object,
     id: {
       type: String,
       required: true
@@ -24,13 +25,8 @@ export default {
 
 <template>
   <select v-model="value">
-    <option value="ms">milliseconds</option>
-    <option value="s">seconds</option>
-    <option value="m">minutes</option>
-    <option value="h">hours</option>
-    <option value="d">days</option>
-    <option value="w">week</option>
-    <option value="M">month</option>
-    <option value="y">year</option>
+    <option v-for="option in options" :value="option.value">
+      {{option.label}}
+    </option>
   </select>
 </template>

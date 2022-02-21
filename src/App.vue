@@ -1,6 +1,11 @@
 <script>
 import Form from './components/Form.vue'
 import DisplayChart from './components/DisplayChart.vue'
+import {
+  stackColumnChartOptions,
+  stackColumnDataFromAggregate,
+  getRequest
+} from './lib/utils'
 
 export default {
   components: {
@@ -9,73 +14,27 @@ export default {
   },
   data() {
     return {
-      chartOptions: {
-        chart: {
-          type: 'column'
-        },
-        title: {
-          text: 'Streem'
-        },
-        xAxis: {
-          labels: {
-            format: '{value:%Y-%b-%e}'
-          },
-          type: 'datetime',
-          title: {
-            text: 'timestamp'
-          }
-        },
-        yAxis: {
-          title: {
-            text: 'Count of records'
-          }
-        },
-        plotOptions: {
-          column: {
-            stacking: 'normal'
-          }
-        },
-        series: []
-      }
+      disableSubmitButton: false,
+      chartOptions: stackColumnChartOptions()
     }
   },
   methods: {
     sendRequest(query, after, before, interval) {
-      const data = {query, after, before, interval}
-      const url = new URL('http://localhost:4000/results')
-      Object.keys(data).forEach((k) => url.searchParams.append(k, data[k]))
-      fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            const result = data.result
-            if(result.error){
-              alert(result.error)
-            }else{
-              const categories = []
-              const chartResponse = []
-              result.aggregations.first_agg.buckets.forEach((first_bucket) => {
-                const date = first_bucket.key
+      const params = {query, after, before, interval}
 
-                first_bucket.second_agg.buckets.forEach((second_bucket) => {
-                  const media = second_bucket.key
-                  const count = second_bucket.doc_count
+      this.disableSubmitButton = true
+      getRequest('results', params, (data) => {
+        // response was a success, error is already handled by the getRequest function
+        if(!data.error){
+          const chartData = stackColumnDataFromAggregate(data.result)
 
-                  const media_obj = chartResponse.find((resp) => resp.name === media)
-                  if(media_obj){
-                    media_obj.data.push([date, count])
-                  }else{
-                    chartResponse.push({
-                      name: media,
-                      data: [[date, count]]
-                    })
-                  }
-                })
-              })
+          this.chartOptions.xAxis.categories = chartData.categories
+          this.chartOptions.series = chartData.chartResponse
+        }
 
-              this.chartOptions.xAxis.categories = categories
-              this.chartOptions.series = chartResponse
-            }
-          });
+        // enable the submit button once a request is complete; either success or failure
+        this.disableSubmitButton = false
+      })
     }
   }
 }
@@ -83,8 +42,9 @@ export default {
 
 <template>
   <header>
+    <h1>Streem</h1>
     <div class="wrapper">
-      <Form @submitAPIRequest="sendRequest"/>
+      <Form @submitAPIRequest="sendRequest" :submitButtonStatus="disableSubmitButton"/>
     </div>
   </header>
 
@@ -99,19 +59,16 @@ export default {
 #app {
   max-width: 100%;
   width: 100%;
-  margin: 0 auto;
   padding: 2rem;
+  border: 2px solid red;
 
   font-weight: normal;
 }
 
 header {
   line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+  display: flex;
+  flex-direction: column;
 }
 
 a,
@@ -129,13 +86,11 @@ a,
 
 @media (min-width: 1024px) {
   body {
-    display: flex;
     place-items: center;
   }
 
   #app {
     display: grid;
-    padding: 0 2rem;
   }
 
   header {
@@ -148,10 +103,15 @@ a,
     display: flex;
     place-items: flex-start;
     flex-wrap: wrap;
+
+    border: 1px solid green;
+
+    margin-bottom: 2em;
   }
 
-  .logo {
-    margin: 0 2rem 0 0;
+  main {
+    border: 1px solid blue;
+    min-height: 400px;
   }
 }
 </style>

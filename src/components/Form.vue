@@ -1,23 +1,30 @@
 <script>
-import TextInput from "./inputs/TextInput.vue";
-import DateInput from "./inputs/DateInput.vue";
-import NumberInput from "./inputs/NumberInput.vue";
+import NormalInput from "./inputs/NormalInput.vue";
 import SelectInput from "./inputs/SelectInput.vue";
 
 export default {
+  props: ['submitButtonStatus'],
   data() {
     return {
       query: "",
       dateFrom: "",
       dateTo: "",
       interval: "",
-      intervalRange: "d"
+      intervalRange: "d",
+      selectOptions: [
+        {value: 'ms', label: 'milliseconds'},
+        {value: 's', label: 'seconds'},
+        {value: 'm', label: 'minutes'},
+        {value: 'h', label: 'hours'},
+        {value: 'd', label: 'days'},
+        {value: 'w', label: 'week'},
+        {value: 'M', label: 'month'},
+        {value: 'y', label: 'year'},
+      ]
     }
   },
   components: {
-    TextInput,
-    DateInput,
-    NumberInput,
+    NormalInput,
     SelectInput
   },
   emits: ['submitAPIRequest'],
@@ -44,15 +51,20 @@ export default {
 
 <template>
   <form class="form" @submit.prevent="submitForm">
-    <TextInput label="Query" v-model="query" id="query" @updateParent="valueUpdate"/>
+    <NormalInput type="text" label="Query" v-model="query" id="query" @updateParent="valueUpdate"/>
     <div>
-      <DateInput label="Date From" v-model="dateFrom" id="dateFrom" @updateParent="valueUpdate"/>
-      <DateInput label="Date To" v-model="dateTo" id="dateTo" @updateParent="valueUpdate"/>
+      <NormalInput type="date" label="Date From" v-model="dateFrom" id="dateFrom" @updateParent="valueUpdate"/>
+      <NormalInput type="date" label="Date To" v-model="dateTo" id="dateTo" @updateParent="valueUpdate"/>
     </div>
     <div>
-      <NumberInput label="Interval" v-model="interval" id="interval" @updateParent="valueUpdate"/>
-      <SelectInput v-model="intervalRange" id="intervalRange" @updateParent="valueUpdate"/>
+      <NormalInput type="number" label="Interval" v-model="interval" id="interval" @updateParent="valueUpdate"/>
+      <SelectInput v-model="intervalRange" id="intervalRange" @updateParent="valueUpdate"
+                   :options="selectOptions"/>
     </div>
-    <button type="submit">Submit</button>
+    <button type="submit" :disabled="submitButtonStatus">Submit</button>
   </form>
 </template>
+
+<style>
+
+</style>

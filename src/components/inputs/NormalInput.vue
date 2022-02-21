@@ -1,6 +1,7 @@
 <script>
 export default {
   props: {
+    type: String,
     modelValue: String,
     label: {
       type: String,
@@ -30,7 +31,7 @@ export default {
   <label :for="id">{{ label }}</label>
   <input
       :id="id"
-      type="text"
+      :type="type"
       v-model="value"
   />
 </template>
