@@ -67,8 +67,16 @@ export function getRequest(endPoint, params, callBack) {
     Object.keys(params).forEach((k) => url.searchParams.append(k, params[k]))
 
     fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            callBack(data)
+        .then(response => {
+            if(response.status === 200){
+                response.json().then((data) => {
+                    callBack(data)
+                })
+            }else{
+                response.json().then((data) => {
+                    alert(data.error)
+                    callBack({error: true})
+                })
+            }
         })
 }
