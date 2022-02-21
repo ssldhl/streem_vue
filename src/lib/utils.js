@@ -70,11 +70,12 @@ export function stackColumnDataFromAggregate(aggregateResult) {
     return chartResponse
 }
 
-// Sends GET request to specified endpoint of the API
+// Sends GET request to specified endpoint of the API; VITE_API_URL defined in environment variables
 // Accepts: end point with out leading '/', params object and success call back function
 // Shows alert on error and adds {error: true} to call back function, no need to handle error on caller
 export function getRequest(endPoint, params, callBack) {
-    const url = new URL(`http://localhost:4000/${endPoint}`)
+    const url = new URL(`${import.meta.env.VITE_API_URL}${endPoint}`)
+    console.log(url)
     // add the params to the url going through all of them
     Object.keys(params).forEach((k) => url.searchParams.append(k, params[k]))
 
