@@ -21,7 +21,7 @@ export default {
     </div>
     <div v-else>
       <p>
-        No result to display.
+        No data to display.
       </p>
     </div>
   </div>
