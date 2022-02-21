@@ -3,6 +3,9 @@ import Form from './components/Form.vue'
 import DisplayChart from './components/DisplayChart.vue'
 import {getRequest, stackColumnChartOptions, stackColumnDataFromAggregate} from './lib/utils'
 
+// data - disableSubmitButton: to enable/disable submit button on API request
+// data - chartOptions: required to show chart in highchart js
+// method - sendRequest: send API request to RoR backend
 export default {
   components: {
     Form,
