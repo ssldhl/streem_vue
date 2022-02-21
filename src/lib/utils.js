@@ -75,7 +75,6 @@ export function stackColumnDataFromAggregate(aggregateResult) {
 // Shows alert on error and adds {error: true} to call back function, no need to handle error on caller
 export function getRequest(endPoint, params, callBack) {
     const url = new URL(`${import.meta.env.VITE_API_URL}${endPoint}`)
-    console.log(url)
     // add the params to the url going through all of them
     Object.keys(params).forEach((k) => url.searchParams.append(k, params[k]))
 
