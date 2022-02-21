@@ -1,11 +1,7 @@
 <script>
 import Form from './components/Form.vue'
 import DisplayChart from './components/DisplayChart.vue'
-import {
-  stackColumnChartOptions,
-  stackColumnDataFromAggregate,
-  getRequest
-} from './lib/utils'
+import {getRequest, stackColumnChartOptions, stackColumnDataFromAggregate} from './lib/utils'
 
 export default {
   components: {
@@ -20,16 +16,15 @@ export default {
   },
   methods: {
     sendRequest(query, after, before, interval) {
-      const params = {query, after, before, interval}
-
+      // starting to send request, so disable the submit button
       this.disableSubmitButton = true
+
+      // construct params from the arguments and send request
+      const params = {query, after, before, interval}
       getRequest('results', params, (data) => {
         // response was a success, error is already handled by the getRequest function
         if(!data.error){
-          const chartData = stackColumnDataFromAggregate(data.result)
-
-          this.chartOptions.xAxis.categories = chartData.categories
-          this.chartOptions.series = chartData.chartResponse
+          this.chartOptions.series = stackColumnDataFromAggregate(data.result)
         }
 
         // enable the submit button once a request is complete; either success or failure

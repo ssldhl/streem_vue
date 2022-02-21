@@ -25,6 +25,7 @@ export default {
 
 <template>
   <select v-model="value">
+    <!-- iterate through the options and generate option tag-->
     <option v-for="option in options" :value="option.value">
       {{option.label}}
     </option>
