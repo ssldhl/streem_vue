@@ -8,7 +8,7 @@ export default {
   },
   data() {
     return {
-      chartDataAvailable: this.chartOptions.series.length > 0
+      chartDataAvailable: false
     }
   }
 }
@@ -16,11 +16,17 @@ export default {
 
 <template>
   <div class="chart">
-    <div v-if="chartDataAvailable">
+    <div v-if="this.chartOptions.series.length > 0">
       <highcharts :options="chartOptions"></highcharts>
     </div>
     <div v-else>
-      No result
+      <p>
+        No result to display.
+      </p>
     </div>
   </div>
 </template>
+
+<style scoped>
+
+</style>

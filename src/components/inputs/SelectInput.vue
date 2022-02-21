@@ -30,3 +30,9 @@ export default {
     </option>
   </select>
 </template>
+
+<style scoped>
+select {
+  padding: 5px;
+}
+</style>

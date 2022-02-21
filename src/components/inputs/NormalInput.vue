@@ -28,10 +28,23 @@ export default {
 </script>
 
 <template>
-  <label :for="id">{{ label }}</label>
-  <input
-      :id="id"
-      :type="type"
-      v-model="value"
-  />
+  <div class="input-group">
+    <label :for="id">{{ label }}</label>
+    <input
+        :id="id"
+        :type="type"
+        v-model="value"
+    />
+  </div>
 </template>
+
+<style scoped>
+.input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+input {
+  padding: 5px;
+}
+</style>

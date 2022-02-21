@@ -43,6 +43,7 @@ export default {
 <template>
   <header>
     <h1>Streem</h1>
+    <hr>
     <div class="wrapper">
       <Form @submitAPIRequest="sendRequest" :submitButtonStatus="disableSubmitButton"/>
     </div>
@@ -60,7 +61,6 @@ export default {
   max-width: 100%;
   width: 100%;
   padding: 2rem;
-  border: 2px solid red;
 
   font-weight: normal;
 }
@@ -76,6 +76,10 @@ a,
   text-decoration: none;
   color: hsla(160, 100%, 37%, 1);
   transition: 0.4s;
+}
+
+hr {
+  width: 100%;
 }
 
 @media (hover: hover) {
@@ -96,22 +100,19 @@ a,
   header {
     display: flex;
     place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
   }
 
   header .wrapper {
     display: flex;
     place-items: flex-start;
     flex-wrap: wrap;
-
-    border: 1px solid green;
+    padding: 10px;
 
     margin-bottom: 2em;
   }
 
   main {
     border: 1px solid blue;
-    min-height: 400px;
   }
 }
 </style>

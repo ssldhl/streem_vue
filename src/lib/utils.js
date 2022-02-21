@@ -5,9 +5,10 @@ export function stackColumnChartOptions(){
             type: 'column'
         },
         title: {
-            text: 'Streem'
+            text: 'Result'
         },
         xAxis: {
+            tickInterval: 24 * 3600 * 1000 * 5, // 5 days interval
             labels: {
                 format: '{value:%Y-%b-%e}'
             },
@@ -23,6 +24,7 @@ export function stackColumnChartOptions(){
         },
         plotOptions: {
             column: {
+                pointWidth: 20,
                 stacking: 'normal'
             }
         },

@@ -51,20 +51,43 @@ export default {
 
 <template>
   <form class="form" @submit.prevent="submitForm">
-    <NormalInput type="text" label="Query" v-model="query" id="query" @updateParent="valueUpdate"/>
-    <div>
-      <NormalInput type="date" label="Date From" v-model="dateFrom" id="dateFrom" @updateParent="valueUpdate"/>
-      <NormalInput type="date" label="Date To" v-model="dateTo" id="dateTo" @updateParent="valueUpdate"/>
+    <div class="inputs">
+      <div class="input">
+        <NormalInput type="text" label="Query" v-model="query" id="query" @updateParent="valueUpdate"/>
+      </div>
+      <div class="input center-input">
+        <NormalInput type="date" label="Date From" v-model="dateFrom" id="dateFrom" @updateParent="valueUpdate"/>
+        <NormalInput type="date" label="Date To" v-model="dateTo" id="dateTo" @updateParent="valueUpdate"/>
+      </div>
+      <div class="input">
+        <NormalInput type="number" label="Interval" v-model="interval" id="interval" @updateParent="valueUpdate"/>
+        <SelectInput v-model="intervalRange" id="intervalRange" @updateParent="valueUpdate"
+                     :options="selectOptions"/>
+      </div>
     </div>
-    <div>
-      <NormalInput type="number" label="Interval" v-model="interval" id="interval" @updateParent="valueUpdate"/>
-      <SelectInput v-model="intervalRange" id="intervalRange" @updateParent="valueUpdate"
-                   :options="selectOptions"/>
+    <div class="submit">
+      <button type="submit" :disabled="submitButtonStatus">Submit</button>
     </div>
-    <button type="submit" :disabled="submitButtonStatus">Submit</button>
   </form>
 </template>
 
-<style>
+<style scoped>
+.inputs {
+  display: flex;
+}
+.center-input {
+  margin-right: 15px;
+  margin-left: 15px;
+}
+.input select {
+  margin-top: 5px;
+}
+.submit {
+  text-align: center;
+  margin-top: 15px;
+}
 
+.submit button {
+  padding: 10px;
+}
 </style>
